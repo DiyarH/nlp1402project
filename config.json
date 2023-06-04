@@ -1,0 +1,41 @@
+{
+  "paths": {
+    "raw_data": "data/raw",
+    "clean_data": "data/clean",
+    "sentencebroken_data": "data/sentencebroken",
+    "wordbroken_data": "data/wordbroken",
+    "stats": "stats"
+  },
+  "filenames": {
+    "raw_labels": "labels.csv",
+    "raw_labels_zip": "HowTo100M.zip",
+    "raw_captions": "captions.json"
+  },
+  "urls": {
+    "raw_labels_zip": "https://www.rocq.inria.fr/cluster-willow/amiech/howto100m/HowTo100M.zip",
+    "raw_captions": "https://www.rocq.inria.fr/cluster-willow/amiech/howto100m/asr.json",
+    "raw_labels": "HowTo100M_v1.csv"
+  },
+  "chunksize": {
+    "collector": 64,
+    "categorizer": 64,
+    "cleaner": 8,
+    "stats": 8
+  },
+  "sampling_seed": 1616664577513753414,
+  "max_n_samples_per_category": 1000,
+  "stats_n_top_words": {
+    "frequency": 10,
+    "RNF": 10,
+    "TF-IDF": 10,
+    "frequency_histogram": 100
+  },
+  "collector_behavior": {
+    "redownload_labels": false,
+    "redownload_captions": false,
+    "reextract_labels": false,
+    "delete_labels_zip": false
+  },
+  "sentbreak_overwrite": false,
+  "wordbreak_overwrite": false
+}

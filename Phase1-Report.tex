@@ -1,0 +1,406 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2019
+
+% ready for submission
+% \usepackage{neurips_2019}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2019}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+% \usepackage[final]{neurips_2019}
+
+% to avoid loading the natbib package, add option nonatbib:
+%     \usepackage[nonatbib]{neurips_2019}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+% \usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{graphicx}
+\usepackage[a4paper,
+textwidth=16cm,
+textheight=24cm,
+headheight=1cm,
+centering]{geometry}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{csvsimple}
+\usepackage{color}
+\usepackage{pgffor}
+\usepackage{tikz}
+\usepackage{tikzpagenodes}
+\usepackage{subfig}
+\usepackage{xparse}
+
+\newcommand{\mostfrequentwords}[1]{
+  \centering
+  \includegraphics[width=0.4\textwidth, height=0.48\textheight]{stats/most_frequent_words/#1.png}
+}
+\newcommand{\rnftopwords}[1]{
+  \centering
+  \includegraphics[width=0.4\textwidth, height=0.48\textheight]{stats/RNF_top_words/#1.png}
+}
+\newcommand{\tfidftopwords}[1]{
+  \centering
+  \includegraphics[width=0.4\textwidth, height=0.48\textheight]{stats/TF_IDF_top_words/#1.png}
+}
+
+\newcommand{\mostfrequentwordsgrid}[5]{
+  \begin{figure}[htbp]
+    \mostfrequentwords{#4}
+    \hfill
+    \mostfrequentwords{#3}
+    \vspace{0.5cm}
+    \mostfrequentwords{#2}
+    \hfill
+    \mostfrequentwords{#1}
+    \caption{#5}
+  \end{figure}
+}
+\newcommand{\rnftopwordsgrid}[5]{
+  \begin{figure}[htbp]
+    \rnftopwords{#4}
+    \hfill
+    \rnftopwords{#3}
+    \vspace{0.5cm}
+    \rnftopwords{#2}
+    \hfill
+    \rnftopwords{#1}
+    \caption{#5}
+  \end{figure}
+}
+\newcommand{\tfidftopwordsgrid}[5]{
+  \begin{figure}[htbp]
+    \tfidftopwords{#4}
+    \hfill
+    \tfidftopwords{#3}
+    \vspace{0.5cm}
+    \tfidftopwords{#2}
+    \hfill
+    \tfidftopwords{#1}
+    \caption{#5}
+  \end{figure}
+}
+
+\newcommand{\allmostfrequentwords}{
+  \mostfrequentwordsgrid
+  {arts_and_entertainment}
+  {cars_and_other_vehicles}
+  {computers_and_electronics}
+  {education_and_communications}
+  {Most frequent words per category}
+  \mostfrequentwordsgrid
+  {family_life}
+  {finance_and_business}
+  {food_and_entertaining}
+  {health}
+  {Most frequent words per category}
+  \mostfrequentwordsgrid
+  {hobbies_and_crafts}
+  {holidays_and_traditions}
+  {home_and_garden}
+  {personal_care_and_style}
+  {Most frequent words per category}
+  \mostfrequentwordsgrid
+  {pets_and_animals}
+  {philosophy_and_religion}
+  {relationships}
+  {sports_and_fitness}
+  {Most frequent words per category}
+  \begin{figure}[htbp]
+    \mostfrequentwords{travel}
+    \hfill
+    \mostfrequentwords{work_world}
+    \vspace{0.5cm}
+    \mostfrequentwords{youth}
+    \caption{Most frequent words per category}
+  \end{figure}
+}
+\newcommand{\allrnftopwords}{
+  \rnftopwordsgrid
+  {arts_and_entertainment}
+  {cars_and_other_vehicles}
+  {computers_and_electronics}
+  {education_and_communications}
+  {RNF metric words per category}
+  \rnftopwordsgrid
+  {family_life}
+  {finance_and_business}
+  {food_and_entertaining}
+  {health}
+  {RNF metric words per category}
+  \rnftopwordsgrid
+  {hobbies_and_crafts}
+  {holidays_and_traditions}
+  {home_and_garden}
+  {personal_care_and_style}
+  {RNF metric words per category}
+  \rnftopwordsgrid
+  {pets_and_animals}
+  {philosophy_and_religion}
+  {relationships}
+  {sports_and_fitness}
+  {RNF metric words per category}
+  \begin{figure}[htbp]
+    \rnftopwords{travel}
+    \hfill
+    \rnftopwords{work_world}
+    \vspace{0.5cm}
+    \rnftopwords{youth}
+    \caption{RNF metric words per category}
+  \end{figure}
+}
+\newcommand{\alltfidftopwords}{
+  \tfidftopwordsgrid
+  {arts_and_entertainment}
+  {cars_and_other_vehicles}
+  {computers_and_electronics}
+  {education_and_communications}
+  {TF-IDF metric words per category}
+  \tfidftopwordsgrid
+  {family_life}
+  {finance_and_business}
+  {food_and_entertaining}
+  {health}
+  {TF-IDF metric words per category}
+  \tfidftopwordsgrid
+  {hobbies_and_crafts}
+  {holidays_and_traditions}
+  {home_and_garden}
+  {personal_care_and_style}
+  {TF-IDF metric words per category}
+  \tfidftopwordsgrid
+  {pets_and_animals}
+  {philosophy_and_religion}
+  {relationships}
+  {sports_and_fitness}
+  {TF-IDF metric words per category}
+  \begin{figure}[htbp]
+    \tfidftopwords{travel}
+    \hfill
+    \tfidftopwords{work_world}
+    \vspace{0.5cm}
+    \tfidftopwords{youth}
+    \caption{TF-IDF metric words per category}
+  \end{figure}
+}
+
+\pretitle{
+  \begin{center}
+    % References here
+  \LARGE
+  \includegraphics[width=4cm]{image/iust_logo.png}\\[\bigskipamount]
+}
+\posttitle{
+  \end{center}
+}
+\title{Final report template}
+\author{
+  Diyar Hamedi\\
+  Department of Computer Engineering\\
+  Iran University of Science and Technology\\
+  \texttt{diyar\_hamedi@comp.iust.ac.ir}\\
+}
+\date{Spring 2023}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{
+  \begin{minipage}{0.1\textwidth}
+    \includegraphics[width=1cm]{image/iust_logo.png}
+  \end{minipage}
+  \begin{minipage}{0.5\textwidth}\raggedright
+    Natural Language Processing Phase 1 Report\\
+    Iran University of Science and Technology\\
+  \end{minipage}
+}
+\setlength{\headheight}{35.11143pt}
+
+\maketitle
+
+\begin{abstract}
+  This report presents the methodology employed to gather the dataset for the text topic classification task, including data source details and the data collection process.
+  Additionally, we provide insights into the statistics of the collected dataset, showcasing the label distribution, the unit of data segmentation, and the effects of data cleaning.
+  The statistical analysis serves as a foundation for the subsequent development of a text topic classification model using machine learning techniques.
+  The findings and insights gained from this dataset, along with the associated challenges and limitations, contribute to the broader field of natural language processing (NLP) and text classification research.
+\end{abstract}
+
+\section{Introduction}
+In the era of abundant textual data, efficient organization and extraction of valuable information from vast document collections pose significant challenges.
+Topic classification, a fundamental task in natural language processing (NLP), addresses these challenges by categorizing texts into specific topics or domains.
+This project report focuses on the initial phase of developing a video subtitle topic classification model.
+Our primary objective is to gather and clean up data, extract useful metrics and statistics, and lay the groundwork for subsequent model development.
+
+\section{Motivation}
+The motivation behind developing a video subtitle topic classification model lies in the wealth of textual information embedded within video content.
+As videos continue to dominate various platforms, such as YouTube, educational websites, and online tutorials, the accompanying subtitles serve as a valuable resource for understanding and accessing the content within these videos.
+
+In this phase of the project, we embark on gathering and cleaning up the video subtitle data while extracting useful metrics and statistics.
+The subsequent phase will focus on model development and training using the preprocessed data.
+
+The benefits of video subtitle topic classification are as follows:
+
+\begin{itemize}
+  \item Information Retrieval and Search: Categorizing video subtitles into specific topics or domains facilitates efficient organization and retrieval of textual data.
+  This categorization provides a structured framework for indexing and searching relevant information within large video collections, enabling users to find specific content quickly.
+  \item Content Recommendation and Personalization: Topic classification allows for personalized content recommendations.
+  By understanding the topics of interest for individual users, recommendation systems can deliver tailored content aligned with their preferences. This personalization enhances user experiences, improves satisfaction, and increases the relevance of suggested content.
+  \item Social Media Monitoring and Sentiment Analysis: Topic classification is valuable for monitoring social media discussions and analyzing sentiment trends.
+  Categorizing social media posts or comments into different topics enables businesses and organizations to gain insights into public opinions, customer feedback, and emerging trends related to specific domains or products.
+  This analysis helps in understanding customer sentiment, identifying key concerns, and adapting marketing strategies accordingly.
+  \item Automated Content Tagging and Organization: Topic classification enables the automatic tagging and organization of textual content, benefiting content management systems, news portals, or document repositories.
+  By categorizing videos' subtitles based on topics, the system can streamline content organization, retrieval, and navigation. This automation saves time and effort in manually tagging and structuring the content, enhancing overall efficiency and user experience.
+\end{itemize}
+
+By gathering and cleaning up video subtitle data and extracting useful metrics and statistics, we aim to establish a solid foundation for the subsequent phase of model development.
+The following sections of this report will outline the data gathering and cleaning process, metrics and statistics analysis, and pave the way for the forthcoming model development phase.
+
+\section{Data Description}
+The dataset used for this project is the HowTo100M dataset\footnote{\url{https://www.di.ens.fr/willow/research/howto100m/}}, which is a large-scale collection of narrated videos with a specific focus on instructional content.
+The dataset contains a vast amount of video clips accompanied by captions, providing valuable textual information that can be used for various NLP tasks, including topic classification.
+
+The key features of the HowTo100M dataset are as follows:
+
+\begin{itemize}
+  \item Video Clips and Captions: The dataset comprises a total of 136 million video clips sourced from 1.2 million YouTube videos.
+  These videos span a timeline of 15 years, offering a diverse and extensive collection of instructional content.
+  The captions associated with each video are automatically downloaded from YouTube and provide textual descriptions of the visual content on the screen.
+  \item Activities and Domains: HowTo100M dataset covers a wide range of activities from various domains.
+  These activities include cooking, hand crafting, personal care, gardening, fitness, and more.
+  The dataset's focus on instructional videos ensures that the content creators explicitly intend to explain the visual elements and provide detailed narration to aid understanding.
+\end{itemize}
+
+For this project, only the subtitles extracted from the videos are utilized, as the primary objective is to perform topic classification on textual data rather than working directly with the videos themselves.
+By using the subtitles, we can leverage the rich instructional content present in the HowTo100M dataset while keeping the project within the scope of the course's requirements.
+
+The data is available in two files:
+\begin{itemize}
+  \item Captions File\footnote{\url{https://www.rocq.inria.fr/cluster-willow/amiech/howto100m/asr.json}}:
+  The JSON file containing (video id, caption) pairs can be accessed at here.
+  This file provides a structured representation of the video captions, allowing easy access to the textual data.
+  \item Labels File\footnote{\url{https://www.rocq.inria.fr/cluster-willow/amiech/howto100m/HowTo100M.zip}}:
+  The labels for each video id (such as main category, subcategory and task id) are available within a zip file.
+  These labels can be used to annotate and categorize the videos based on their topics or domains.
+\end{itemize}
+
+By utilizing the subtitles from the HowTo100M dataset, we can leverage a vast collection of instructional content for our topic classification model.
+The subsequent sections of this report will detail the data gathering process, including accessing the captions and labels files, preprocessing the subtitle data, and performing statistical analysis to gain insights into the dataset's characteristics.
+
+\section{Data Gathering and Cleanup}
+To gather the data for the project, the HowTo100M dataset serves as the primary source.
+The dataset already contains a comprehensive collection of narrated videos with associated captions.
+Therefore, the data gathering process involves downloading the required files from the HowTo100M dataset.
+
+For the cleanup phase, a subset of the data is selected to ensure a manageable size for the initial training.
+In this phase, a maximum of 1000 samples per category are chosen from the available dataset.
+This selection is made to strike a balance between having sufficient data for training the model and avoiding potential performance issues due to an excessively large dataset.
+However, in the subsequent phases, additional samples may be considered if the initial model training does not yield satisfactory results.
+
+During the cleanup process, the selected samples are subjected to several cleaning operations.
+This includes splitting each sample into sentences and words using the nltk Python package.
+The sentence splitting step helps in organizing the text into coherent units, allowing the model to capture the finer nuances of the topic.
+Furthermore, during the word-splitting process, punctuation marks are removed.
+This decision is made considering the nature of the text topic classification task, where the focus is primarily on the content and context conveyed by the words themselves.
+
+Additionally, special characters such as parentheses, non-standard characters like emojis, and any other irrelevant textual elements are eliminated.
+These steps aim to ensure that the data remains focused on the essential content while removing potential noise or distractions that may hinder the model's learning process.
+
+Currently, each sample consists of the entire video subtitle for simplicity.
+However, in the second phase of the project, an alternative approach will be explored.
+The subtitles will be split into three distinct segments: the introduction, body, and outro.
+This division aims to analyze the impact of such segmentation on the model's performance and its ability to capture different aspects of the topic.
+By comparing the results obtained from the segmented subtitles with the initial approach, valuable insights can be gained into the effectiveness of different input representations for the topic classification task.
+
+After the cleanup, segmentation, and word-splitting processes, the samples are organized into individual categories.
+Each category's samples are saved into separate CSV files, with the file names corresponding to their respective categories.
+This organization facilitates efficient data management and subsequent model training.
+
+By following this data gathering and cleanup methodology, the project ensures a well-defined and manageable dataset for the initial phase.
+This approach allows for focused model training while retaining the flexibility to adjust the dataset size, composition, and input representation in later stages if necessary.
+\section{Data Statistics and Metrics}
+In this section, we present an overview of the dataset along with various metrics and statistics that have been extracted.
+The raw and clean dataset sizes are provided, followed by an analysis of different linguistic features and measurements.
+
+\subsection{Overview}
+The HowTo100M dataset used in this project comprises more than 1.2 million narrated videos with associated captions.
+In this phase, a maximum of 1000 sample from each category has been extracted.
+The raw and cleaned-up dataset sizes are as follows:
+
+\begin{table}[htbp]
+  \centering
+  \csvautotabular{stats/dataset_sizes.csv}
+  \caption{Size of the raw and clean datasets per category.}
+  \label{tab:dataset_size}
+\end{table}
+
+These sizes provide a perspective on the scale of the dataset and its potential impact on the subsequent analysis.
+
+\subsection{Linguistic Features and Measures}
+In order to gain insights into the linguistic characteristics of the dataset, several metrics and statistics have been computed.
+The following metrics are presented:
+
+\subsubsection{Scale Analysis}
+
+\begin{enumerate}
+  \item Count of Sentences: The number of sentences in each category, as well as the average number of sentences per sample.
+  \item Count of Word: The number of words in each category, as well as the average number of words per sample.
+  \item Count of Unique Words: The number of unique words across all documents, as well as the number of categorywise common and unique words.
+\end{enumerate}
+
+\subsubsection{Frequency Analysis}
+
+\begin{enumerate}
+  \item Most Frequent Words: The top 10 most frequent words unique to each category.
+  \item RNF Metric Top Words: The top 10 common words with highest RNF value for each category.
+  \item TF-IDF Metric Top Words: The top 10 common words with highest TF-IDF value for each category.
+  \item Histogram of Unique Word Frequencies: A visualization representing the frequency distribution of top 100 most frequent unique words in descending order.
+\end{enumerate}
+
+\begin{table}[htbp]
+  \centering
+  \csvautotabular{stats/number_of_sentences.csv}
+  \caption{Number of sentences per category.}
+  \label{tab:number_of_sentences}
+\end{table}
+\begin{table}[htbp]
+  \centering
+  \csvautotabular{stats/number_of_words.csv}
+  \caption{Number or words per category.}
+  \label{tab:number_of_words}
+\end{table}
+\begin{table}[htbp]
+  \centering
+  \csvautotabular{stats/number_of_unique_words.csv}
+  \caption{Number or unique words per category.}
+  \label{tab:number_of_unique_words}
+\end{table}
+\allmostfrequentwords
+\allrnftopwords
+\alltfidftopwords
+\begin{figure}
+  \centering
+  \includegraphics[angle=270, origin=c, height=0.6\textheight]{stats/frequency_histogram.png}
+  \caption{Frequency histogram for top 100 most frequent words}
+  \label{tab:frequency_histogram}
+\end{figure}
+
+\section{Conclusion}
+In summary, this project has successfully completed the crucial steps of data gathering, cleaning, and extracting useful statistics and metrics from the HowTo100M dataset.
+These preliminary findings will serve as a solid foundation for the development of the video subtitle topic classification model in the next phase.
+By leveraging the insights gained and incorporating advanced techniques, we aim to create a powerful model capable of accurately classifying video subtitles into various topics, thereby enabling applications in information retrieval, content recommendation, sentiment analysis, and automated content organization.
+
+% \section*{References}
+
+\end{document}
