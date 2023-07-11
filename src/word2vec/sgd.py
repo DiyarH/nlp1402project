@@ -6,8 +6,7 @@ SAVE_PARAMS_EVERY = 5000
 import pickle
 import glob
 import random
-# import numpy as np
-import cupy as np
+import numpy as np
 import os.path as op
 
 def load_saved_params():

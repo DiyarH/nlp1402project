@@ -1,5 +1,5 @@
 # import numpy as np
-import cupy as np
+import torch
 import random
 
 
@@ -17,17 +17,17 @@ def softmax(x):
 
     if len(x.shape) > 1:
         # Matrix
-        tmp = np.max(x, axis=1)
+        tmp = torch.max(x, dim=1)
         x -= tmp.reshape((x.shape[0], 1))
-        x = np.exp(x)
-        tmp = np.sum(x, axis=1)
+        x = torch.exp(x)
+        tmp = torch.sum(x, dim=1)
         x /= tmp.reshape((x.shape[0], 1))
     else:
         # Vector
-        tmp = np.max(x)
+        tmp = torch.max(x)
         x -= tmp
-        x = np.exp(x)
-        tmp = np.sum(x)
+        x = torch.exp(x)
+        tmp = torch.sum(x)
         x /= tmp
 
     assert x.shape == orig_shape
@@ -43,7 +43,7 @@ def sigmoid(x):
     s -- sigmoid(x)
     """
 
-    s = 1 / (1 + np.exp(-x))
+    s = 1 / (1 + torch.exp(-x))
 
     return s
 
@@ -80,14 +80,14 @@ def naiveSoftmaxLossAndGradient(
                     (dJ / dU)
     """
 
-    p_all = softmax(np.transpose(outsideVectors, (0, 1)) @ centerWordVec)
+    p_all = softmax(torch.transpose(outsideVectors, 0, 1) @ centerWordVec)
     p_o = p_all[outsideWordIdx]
-    loss = -np.log(p_o)
+    loss = -torch.log(p_o)
     u_o = outsideVectors[outsideWordIdx]
-    gradCenterVec = np.sum(outsideVectors * np.expand_dims(p_all, 1), axis=0) - u_o
-    gradOutsideVecs = np.broadcast_to(
+    gradCenterVec = torch.sum(outsideVectors * torch.unsqueeze(p_all, 1), dim=0) - u_o
+    gradOutsideVecs = torch.broadcast_to(
         centerWordVec, outsideVectors.shape
-    ) * np.expand_dims(p_all, 1)
+    ) * torch.unsqueeze(p_all, 1)
     gradOutsideVecs[outsideWordIdx] -= centerWordVec
 
     return loss, gradCenterVec, gradOutsideVecs
@@ -125,28 +125,28 @@ def negSamplingLossAndGradient(
     negSampleWordIndices = getNegativeSamples(outsideWordIdx, vocabulary, K)
     indices = [outsideWordIdx] + negSampleWordIndices
 
-    unique_negative_indices, unique_negative_counts = np.unique(
+    unique_negative_indices, unique_negative_counts = torch.unique(
         negSampleWordIndices, return_counts=True
     )
     u_o = outsideVectors[outsideWordIdx]
     u_negatives = outsideVectors[unique_negative_indices]
-    positive_similarity = np.expand_dims(u_o, 0) @ centerWordVec
-    negative_similarities = -np.transpose(u_negatives, (0, 1)) @ centerWordVec
+    positive_similarity = torch.unsqueeze(u_o, 0) @ centerWordVec
+    negative_similarities = -torch.transpose(u_negatives, 0, 1) @ centerWordVec
     positive_sigmoid = sigmoid(positive_similarity)
     negative_sigmoids = sigmoid(negative_similarities)
-    positive_loss = -np.log(positive_sigmoid)
-    negative_losses = -np.log(negative_sigmoids)
-    loss = positive_loss + np.sum(negative_losses * unique_negative_counts)
+    positive_loss = -torch.log(positive_sigmoid)
+    negative_losses = -torch.log(negative_sigmoids)
+    loss = positive_loss + torch.sum(negative_losses * unique_negative_counts)
     gradCenterVec = (positive_sigmoid - 1) * u_o
-    gradCenterVec -= np.sum(
-        np.expand_dims(unique_negative_counts * (negative_sigmoids - 1), 1)
-        * np.transpose(u_negatives, (0, 1)),
+    gradCenterVec -= torch.sum(
+        torch.unsqueeze(unique_negative_counts * (negative_sigmoids - 1), 1)
+        * torch.transpose(u_negatives, 0, 1),
         axis=0,
     )
-    gradOutsideVecs = np.zeros_like(outsideVectors)
-    gradOutsideVecs[unique_negative_indices] = np.expand_dims(
+    gradOutsideVecs = torch.zeros_like(outsideVectors)
+    gradOutsideVecs[unique_negative_indices] = torch.unsqueeze(
         unique_negative_counts * (1 - negative_sigmoids), 1
-    ) * np.broadcast_to(centerWordVec, u_negatives.shape)
+    ) * torch.broadcast_to(centerWordVec, u_negatives.shape)
     gradOutsideVecs[outsideWordIdx] = (positive_sigmoid - 1) * centerWordVec
 
     return loss, gradCenterVec, gradOutsideVecs
@@ -195,8 +195,8 @@ def skipgram(
     """
 
     loss = 0.0
-    gradCenterVecs = np.zeros(centerWordVectors.shape)
-    gradOutsideVectors = np.zeros(outsideVectors.shape)
+    gradCenterVecs = torch.zeros(centerWordVectors.shape)
+    gradOutsideVectors = torch.zeros(outsideVectors.shape)
 
     center_word_index = word2Ind[currentCenterWord]
     center_word_vec = centerWordVectors[center_word_index]
@@ -239,7 +239,7 @@ def word2vec_sgd_wrapper(
 ):
     batchsize = 50
     loss = 0.0
-    grad = np.zeros(wordVectors.shape)
+    grad = torch.zeros(wordVectors.shape)
     N = wordVectors.shape[0]
     centerWordVectors = wordVectors[: int(N / 2), :]
     outsideVectors = wordVectors[int(N / 2) :, :]

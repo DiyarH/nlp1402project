@@ -7,7 +7,8 @@ sys.path.append(filepath)
 from word2vec import *
 from sgd import *
 import time
-import cupy as np
+# import numpy as np
+import torch
 import nltk
 from dataset import load_dataset_from_huggingface
 from dataset.utils import format_category_name
@@ -29,10 +30,10 @@ def word2vec(dataset, config):
 	vocab_size = len(vocabulary)
 	
 	startTime=time.time()
-	word_vectors = np.concatenate(
-		((np.random.rand(vocab_size, vec_size) - 0.5) /
-		vec_size, np.zeros((vocab_size, vec_size))),
-		axis=0)
+	word_vectors = torch.cat(
+		((torch.rand(vocab_size, vec_size) - 0.5) /
+		vec_size, torch.zeros((vocab_size, vec_size))),
+		dim=0)
 	word_vectors = sgd(
 		lambda vec: word2vec_sgd_wrapper(skipgram, word2ind, vec, sentences, window_size,
 			negSamplingLossAndGradient),
@@ -55,7 +56,7 @@ def run():
         category_name = format_category_name(category)
         filename = '{}.word2vec.npy'.format(category_name)
         filepath = os.path.join(models_directory, filename)
-        word_vectors, ind2word = word2vec(categorized, word2vec_config)
+        word_vectors, word2ind = word2vec(categorized, word2vec_config)
         np.save(filepath, word_vectors)
         print('saved word vectors as {}!'.format(filepath))
     
