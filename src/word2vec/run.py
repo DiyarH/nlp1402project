@@ -46,10 +46,9 @@ def run():
     dataset = load_dataset_from_huggingface()
     train_dataset = dataset['train']
     categories = list(set(train_dataset['category']))
-    train_dataset_list = train_dataset.to_list()
-    corpus = [sample['text'] for sample in train_dataset_list]
+    corpus = [sample['text'] for sample in train_dataset]
     categorized_corpus = {category:
-                    	 [sample['text'] for sample in train_dataset_list
+                    	 [sample['text'] for sample in train_dataset
                          if sample['category'] == category]
                          for category in categories}
     for category, categorized in categorized_corpus.items():
