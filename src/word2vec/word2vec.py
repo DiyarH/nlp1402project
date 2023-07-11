@@ -2,6 +2,7 @@
 import torch
 import random
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def softmax(x):
     """Compute the softmax function for each row of the input x.
@@ -126,7 +127,7 @@ def negSamplingLossAndGradient(
     indices = [outsideWordIdx] + negSampleWordIndices
 
     unique_negative_indices, unique_negative_counts = torch.unique(
-        negSampleWordIndices, return_counts=True
+        torch.tensor(negSampleWordIndices), return_counts=True
     )
     u_o = outsideVectors[outsideWordIdx]
     u_negatives = outsideVectors[unique_negative_indices]
@@ -195,8 +196,8 @@ def skipgram(
     """
 
     loss = 0.0
-    gradCenterVecs = torch.zeros(centerWordVectors.shape)
-    gradOutsideVectors = torch.zeros(outsideVectors.shape)
+    gradCenterVecs = torch.zeros(centerWordVectors.shape).to(device)
+    gradOutsideVectors = torch.zeros(outsideVectors.shape).to(device)
 
     center_word_index = word2Ind[currentCenterWord]
     center_word_vec = centerWordVectors[center_word_index]
@@ -239,7 +240,7 @@ def word2vec_sgd_wrapper(
 ):
     batchsize = 50
     loss = 0.0
-    grad = torch.zeros(wordVectors.shape)
+    grad = torch.zeros(wordVectors.shape).to(device)
     N = wordVectors.shape[0]
     centerWordVectors = wordVectors[: int(N / 2), :]
     outsideVectors = wordVectors[int(N / 2) :, :]

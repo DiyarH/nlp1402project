@@ -15,7 +15,7 @@ from dataset.utils import format_category_name
 from config import *
 
 nltk.download('punkt')
-
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def word2vec(dataset, config):
 	vec_size = config['vector_size']
@@ -33,7 +33,7 @@ def word2vec(dataset, config):
 	word_vectors = torch.cat(
 		((torch.rand(vocab_size, vec_size) - 0.5) /
 		vec_size, torch.zeros((vocab_size, vec_size))),
-		dim=0)
+		dim=0).to(device)
 	word_vectors = sgd(
 		lambda vec: word2vec_sgd_wrapper(skipgram, word2ind, vec, sentences, window_size,
 			negSamplingLossAndGradient),
@@ -57,13 +57,13 @@ def run():
         filename = '{}.word2vec.npy'.format(category_name)
         filepath = os.path.join(models_directory, filename)
         word_vectors, word2ind = word2vec(categorized, word2vec_config)
-        np.save(filepath, word_vectors)
+        np.save(filepath, word_vectors.numpy())
         print('saved word vectors as {}!'.format(filepath))
     
     filename = 'all.word2vec.npy'
     filepath = os.path.join(models_directory, filename)
-    word_vectors, word2ind = word2vec(categorized, word2vec_config)
-    np.save(filepath, word_vectors)
+    word_vectors, word2ind = word2vec(corpus, word2vec_config)
+    np.save(filepath, word_vectors.numpy())
     print('saved word vectors as {}!'.format(filepath))
 
 
