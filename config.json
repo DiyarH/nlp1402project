@@ -43,8 +43,8 @@
     "wordbreak_overwrite": false
   },
   "word2vec": {
-    "vector_size": 100,
-    "window_size": 10,
+    "vector_size": 50,
+    "window_size": 5,
     "learning_rate": 0.3,
     "n_iterations": 10000
   }

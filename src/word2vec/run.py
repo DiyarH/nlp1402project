@@ -7,7 +7,7 @@ sys.path.append(filepath)
 from word2vec import *
 from sgd import *
 import time
-import numpy as np
+import cupy as np
 import nltk
 from dataset import load_dataset_from_huggingface
 from dataset.utils import format_category_name
