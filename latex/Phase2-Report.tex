@@ -1,0 +1,97 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2019
+
+% ready for submission
+% \usepackage{neurips_2019}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2019}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+% \usepackage[final]{neurips_2019}
+
+% to avoid loading the natbib package, add option nonatbib:
+%     \usepackage[nonatbib]{neurips_2019}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+% \usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{graphicx}
+\usepackage[a4paper,
+textwidth=16cm,
+textheight=24cm,
+headheight=1cm,
+centering]{geometry}
+\usepackage{titling}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{csvsimple}
+\usepackage{color}
+\usepackage{pgffor}
+\usepackage{tikz}
+\usepackage{tikzpagenodes}
+\usepackage{subfig}
+\usepackage{xparse}
+
+\pretitle{
+  \begin{center}
+    % References here
+  \LARGE
+  \includegraphics[width=4cm]{latex/iust_logo.png}\\[\bigskipamount]
+}
+\posttitle{
+  \end{center}
+}
+\title{Natural Language Processing Project Phase 2 Report}
+\author{
+  Diyar Hamedi\\
+  Department of Computer Engineering\\
+  Iran University of Science and Technology\\
+  \texttt{diyar\_hamedi@comp.iust.ac.ir}\\
+}
+\date{Summer 2023}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{
+  \begin{minipage}{0.1\textwidth}
+    \includegraphics[width=1cm]{latex/iust_logo.png}
+  \end{minipage}
+  \begin{minipage}{0.5\textwidth}\raggedright
+    Natural Language Processing Phase 2 Report\\
+    Iran University of Science and Technology\\
+  \end{minipage}
+}
+\setlength{\headheight}{35.11143pt}
+
+\maketitle
+
+\begin{abstract}
+  This report presents the methods employed in the second phase of developing a text topic classification model.
+  This includes analyzing the dataset gathered in the previous phase, extracting different features and designing and training an effective architecture.
+  We will also explain the insights gained from the analysis and showcase the results of the experiments made with different features and architectures.
+  The code for reproducing this file, the results of the experiments and training the models is available at this repository: \url{https://github.com/DiyarH/nlp1402project}
+\end{abstract}
+
+\section{Introduction}
+After gathering a dataset for text topic classification from the HowTo100M dataset\footnote{\url{https://www.di.ens.fr/willow/research/howto100m/}},
+cleaning up the data and extracting different metrics and statistics from the data, we continue with the process of developing a model suitable for such task.
+In order to find the best architecture for the model and the features given to it as input, we perform several analysis and experiments.
+First, we make use of the Word2Vec algorithm to generate a brand new embedding for all of the dataset words and examine patterns and biases which appear in the embedding.
+Next, we finetune a language model on each of the categorized datasets, and compare the generated sentences of the said model to the actual data.
+In the following steps, we extract various features from the data and train simple architectures on each of those features separately to gain insight on their usefulness.
+Using the knowledge acquired, we then develop multiple architectures which take a combination of said features as input, and compare their training performance as well.
+Finally, we explore the usefulness of Large Language Models (LLMs) for research in Natural Language Processing (NLP), particularly for artificial data generation and zero-shot tasks.
+
+\end{document}

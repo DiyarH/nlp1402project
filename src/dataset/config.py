@@ -10,6 +10,11 @@ config_filepath = os.path.join(root_directory, 'config.json')
 with open(config_filepath, 'r') as file:
   config = json.load(file)
 
+stats_directory = os.path.join(
+  root_directory, config['stats_directory']
+)
+
+config = config['dataset']
 raw_data_directory = os.path.join(
   root_directory, config['paths']['raw_data']
 )
@@ -21,9 +26,6 @@ sentencebroken_data_directory = os.path.join(
 )
 wordbroken_data_directory = os.path.join(
   root_directory, config['paths']['wordbroken_data']
-)
-stats_directory = os.path.join(
-  root_directory, config['paths']['stats']
 )
 
 raw_labels_filepath = os.path.join(raw_data_directory, config['filenames']['raw_labels'])

@@ -2,10 +2,11 @@ import sys
 import os
 filepath = os.path.abspath(__file__)
 filepath = os.path.dirname(filepath)
+filepath = os.path.dirname(filepath)
 sys.path.append(filepath)
 
-from config import clean_data_directory
-from utils import get_datasets
+from dataset.config import clean_data_directory
+from dataset.utils import get_datasets
 from datasets import load_dataset, Dataset
 import pandas as pd
 

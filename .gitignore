@@ -463,3 +463,9 @@ cython_debug/
 
 data/
 stats/
+models/
+experiments/
+reports/
+logs/
+run.log
+.vscode/
