@@ -43,6 +43,9 @@ def word2vec(dataset, config):
 
 
 def run():
+    if not os.path.exists(models_directory):
+        os.mkdir(models_directory)
+        
     dataset = load_dataset_from_huggingface()
     train_dataset = dataset['train']
     categories = list(set(train_dataset['category']))
@@ -61,7 +64,7 @@ def run():
     
     filename = 'all.word2vec.npy'
     filepath = os.path.join(models_directory, filename)
-    word_vectors, word2ind = word2vec(categorized, word2vec_config)
+    word_vectors, word2ind = word2vec(corpus, word2vec_config)
     np.save(filepath, word_vectors)
     print('saved word vectors as {}!'.format(filepath))
 

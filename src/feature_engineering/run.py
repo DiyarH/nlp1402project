@@ -8,9 +8,7 @@ from features import feature_functions, HowTo100MSubtitleFeaturesDataset
 from tqdm.auto import tqdm
 from architectures import choose_suitable_architecture
 from dataset import load_dataset_from_huggingface
-from dataset.config import tqdm_ncols
 from torch.utils.data import random_split, DataLoader
-from torch.nn.functional import one_hot
 from torch.optim import AdamW
 from torch.nn import CrossEntropyLoss
 

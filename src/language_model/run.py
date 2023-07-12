@@ -76,6 +76,9 @@ def finetune_gpt2(dataset, tokenizer):
 
 
 def run():
+    if not os.path.exists(models_directory):
+        os.mkdir(models_directory)
+        
     dataset = load_dataset_from_huggingface()
     dataset = dataset["train"]
 

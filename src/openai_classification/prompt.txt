@@ -1,25 +1,44 @@
 I need you to analyse a video subtitle and tell me which category out of the following it belongs to:
 
 Finance and Business
+
 Arts and Entertainment
+
 Personal Care and Style
+
 Travel
+
 Youth
+
 Work World
+
 Education and Communications
+
 Pets and Animals
+
 Hobbies and Crafts
+
 Home and Garden
+
 Computers and Electronics
+
 Food and Entertaining
+
 Health
+
 Philosophy and Religion
+
 Sports and Fitness
+
 Cars & Other Vehicles
+
 Holidays and Traditions
+
 Family Life
+
 Relationships
 
+I do not need any explanation for your analysis, so only tell me the name of the category, nothing else.
 This is the text you must classify:
 
 Insert the text you want to classify here
